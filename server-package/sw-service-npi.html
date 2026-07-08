@@ -1,0 +1,868 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SW Service NPI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .service-category-tab {
+      border-bottom: 2px solid transparent;
+      color: #64748b;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.35rem 0.15rem 0.45rem;
+      transition: border-color 120ms ease, color 120ms ease;
+    }
+
+    .service-category-tab + .service-category-tab {
+      margin-left: 1.25rem;
+    }
+
+    .service-category-tab:hover,
+    .service-category-tab.is-active {
+      border-color: #2563eb;
+      color: #1e3a8a;
+    }
+
+    .service-tab {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 1.25rem;
+      padding: 0.55rem 0.875rem;
+      transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
+    }
+
+    .service-tab:hover {
+      border-color: #93c5fd;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .service-category-tab:focus-visible,
+    .service-tab:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.35);
+    }
+
+    .service-tab.is-active {
+      border-color: #93c5fd;
+      background: #eff6ff;
+      color: #1e3a8a;
+      box-shadow: inset 3px 0 0 #2563eb;
+    }
+  </style></head>
+<body class="bg-gray-50 min-h-screen p-4 md:p-8">
+  <main class="max-w-5xl mx-auto space-y-6">
+    <section class="bg-white rounded-xl shadow-lg p-6">
+      <div class="mb-5 rounded-2xl border border-gray-200 bg-gradient-to-br from-white to-slate-50 p-6">
+        <div class="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+          <div class="max-w-3xl">
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900 mb-3 md:text-4xl">SW Service NPI Guideline</h1>
+            <p class="text-base leading-7 text-gray-600">
+              提供 HW PM 於 NPI 初期規劃軟體支援的參考指引，快速了解
+              <span class="font-medium text-gray-800">申請流程、導入時機、開發工時、樣品提供邏輯</span>
+              與送測機器及硬體準備規範。
+            </p>
+          </div>
+          <div class="shrink-0 rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-sm leading-6 text-blue-900 md:max-w-xs">
+            <div class="font-semibold mb-1">適用範圍提醒</div>
+            <p class="mb-0">
+              僅適用於一般專案。<br />
+              若為 CPU Platform Leading Project，請直接洽詢專案產品線對應的 SW PM 窗口協助。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-8 rounded-xl border border-slate-200 bg-slate-50 p-4 text-gray-700">
+        <div id="request-flow" class="scroll-mt-6">
+          <h3 class="font-semibold text-blue-800 mb-2">申請流程</h3>
+          <ol class="list-decimal list-inside space-y-2">
+            <li>請先確認專案所需 OS、SUSI 與軟體加值配置項目，並提早完成eflow開單及樣品規劃。</li>
+            <li>準備送測機器前，請確認機器、模組、擴充板、線材與 SKU 已符合 <a href="#hardware-preparation" class="font-medium text-slate-700 underline decoration-slate-400 decoration-1 underline-offset-4 hover:text-slate-900">送測機器與硬體準備規範</a>，避免因樣品或配件不足而延誤後續開發與驗證。</li>
+            <li>若過程中有任何問題，請依照 <a href="#sw-pm-mapping" class="font-medium text-slate-700 underline decoration-slate-400 decoration-1 underline-offset-4 hover:text-slate-900">SW PM 對照表</a>，找到專案產品線對應的 SW PM 窗口進行協助。</li>
+          </ol>
+        </div>
+
+        <div id="sw-pm-mapping" class="mt-6 scroll-mt-6 border-t border-blue-100 pt-4">
+          <h3 class="font-semibold text-blue-800 mb-3">SW PM 支援HW PD/軟體產品 對照表</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full border border-blue-100 text-sm bg-white">
+              <thead class="bg-blue-100 text-gray-800">
+                <tr>
+                  <th class="border border-blue-100 px-3 py-2 text-left">SW PM</th>
+                  <th class="border border-blue-100 px-3 py-2 text-left">HW Product Line supports</th>
+                  <th class="border border-blue-100 px-3 py-2 text-left">SW Product PMs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border border-blue-100 px-3 py-2 font-medium">Elyse</td>
+                  <td class="border border-blue-100 px-3 py-2">AIMB、SIoT(All PD)、IIoT(All PD)</td>
+                  <td class="border border-blue-100 px-3 py-2">Windows、Ubuntu</td>
+                </tr>
+                <tr>
+                  <td class="border border-blue-100 px-3 py-2 font-medium">Alexx</td>
+                  <td class="border border-blue-100 px-3 py-2">SOM、ESBC、EBC、ARK</td>
+                  <td class="border border-blue-100 px-3 py-2">IEC 62443、CRA</td>
+                </tr>
+                <tr>
+                  <td class="border border-blue-100 px-3 py-2 font-medium">Jessica</td>
+                  <td class="border border-blue-100 px-3 py-2">ACG、ARM、DS</td>
+                  <td class="border border-blue-100 px-3 py-2">WEDA Node 導入協調窗口</td>
+                </tr>
+                <tr>
+                  <td class="border border-blue-100 px-3 py-2 font-medium">Judy</td>
+                  <td class="border border-blue-100 px-3 py-2">AIR、Embedded DTOS、AS&amp;R</td>
+                  <td class="border border-blue-100 px-3 py-2">Edge AI SDK</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="lt-table" class="mt-6 scroll-mt-6 border-t border-blue-100 pt-4">
+          <h3 class="font-semibold text-blue-800 mb-2">OS Support 與軟體加值服務說明</h3>
+          <div class="mb-4 rounded-lg border border-slate-200 bg-white p-4 text-sm leading-6 text-gray-700">
+            <div class="grid gap-3 md:grid-cols-2">
+              <div class="rounded-md bg-slate-50 p-3">
+                <p>OS Support 為所有專案的軟體基本支援項目，請 HW PM 優先確認 OS 版本、專案時程與送測機器條件；軟體加值服務則依專案需求選擇，並由 SW PM 協助確認可行性、支援範圍。</p>
+              </div>
+              <div class="rounded-md bg-amber-50 p-3 text-amber-900">
+                <div class="mb-1 text-xs font-semibold text-amber-700">排程提醒</div>
+                <p>開發工時僅供規劃參考，實際排程將依 eFlow 開立時機、樣機與資料完整性、開發狀況及案件量而調整。建議及早開立 eFlow 並完成機台準備，以降低影響排程的風險。</p>
+              </div>
+            </div>
+          </div>
+
+          <section id="os-support" class="scroll-mt-6 rounded-xl border border-blue-100 bg-white p-4">
+            <div class="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+              <div>
+                <h4 class="font-semibold text-gray-900">1. OS Support</h4>
+                <p class="mt-1 text-sm leading-6 text-gray-600">所有專案皆需先確認 OS Image 與 SUSI 支援內容，作為後續軟體加值服務導入的基礎。</p>
+              </div>
+              <span class="w-fit rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800">基本支援</span>
+            </div>
+
+            <div class="grid gap-3 md:grid-cols-2">
+              <div class="rounded-lg border border-gray-200 p-4">
+                <h5 class="mb-3 font-semibold text-gray-900">Windows OS support</h5>
+                <div class="space-y-3 text-sm leading-6 text-gray-700">
+                  <div><div class="font-medium text-gray-900">Windows OS Image Porting</div><dl class="mt-1 grid gap-1"><div><dt class="inline font-medium text-gray-600">申請時機：</dt><dd class="inline"><span class="underline decoration-slate-500 underline-offset-2">PVT</span> 階段</dd></div><div><dt class="inline font-medium text-gray-600">啟動條件：</dt><dd class="inline">Driver 經過 DQA 測試完成</dd></div><div><dt class="inline font-medium text-gray-600">開發工時：</dt><dd class="inline">約 10 man-days</dd></div><div><dt class="inline font-medium text-gray-600">說明：</dt><dd class="inline">需確認 Windows 版本</dd></div></dl></div>
+                  <div class="border-t border-gray-100 pt-3"><div class="font-medium text-gray-900">Windows SUSI porting</div><dl class="mt-1 grid gap-1"><div><dt class="inline font-medium text-gray-600">申請時機：</dt><dd class="inline">DVT 初期</dd></div><div><dt class="inline font-medium text-gray-600">啟動條件：</dt><dd class="inline">提供可開機樣品、SUSI Request Form、VGA Driver</dd></div><div><dt class="inline font-medium text-gray-600">開發工時：</dt><dd class="inline">約 10 man-days</dd></div><div><dt class="inline font-medium text-gray-600">說明：</dt><dd class="inline">需確認與 SUSI 功能相關的硬體不會再變更。</dd></div></dl></div>
+                </div>
+              </div>
+              <div class="rounded-lg border border-gray-200 p-4">
+                <h5 class="mb-3 font-semibold text-gray-900">Ubuntu OS support</h5>
+                <div class="space-y-3 text-sm leading-6 text-gray-700">
+                  <div><div class="font-medium text-gray-900">Ubuntu OS Image Porting</div><dl class="mt-1 grid gap-1"><div><dt class="inline font-medium text-gray-600">申請時機：</dt><dd class="inline">DVT 階段</dd></div><div><dt class="inline font-medium text-gray-600">啟動條件：</dt><dd class="inline">Windows SUSI 開發完成</dd></div><div><dt class="inline font-medium text-gray-600">開發工時：</dt><dd class="inline">約 10 man-days</dd></div><div><dt class="inline font-medium text-gray-600">說明：</dt><dd class="inline">需確認 Ubuntu 版本</dd></div></dl></div>
+                  <div class="border-t border-gray-100 pt-3"><div class="font-medium text-gray-900">Ubuntu SUSI porting</div><dl class="mt-1 grid gap-1"><div><dt class="inline font-medium text-gray-600">申請時機：</dt><dd class="inline">DVT 初期</dd></div><div><dt class="inline font-medium text-gray-600">啟動條件：</dt><dd class="inline">Windows SUSI 開發完成</dd></div><div><dt class="inline font-medium text-gray-600">開發工時：</dt><dd class="inline">約 10 man-days</dd></div><div><dt class="inline font-medium text-gray-600">說明：</dt><dd class="inline">需確認 Ubuntu 版本，功能依 Windows SUSI 範圍製作。</dd></div></dl></div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="mt-4 rounded-lg border border-sky-100 bg-sky-50 px-4 py-3 text-sm leading-6 text-sky-950">
+              <div class="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between">
+                <div class="font-semibold text-sky-900">若同時支援 Windows 與 Ubuntu，建議依下列順序開單</div>
+              </div>
+              <div class="mt-3 overflow-x-auto pb-1">
+                <div class="grid min-w-[760px] grid-cols-[1fr_28px_1fr_28px_1fr_28px_1fr] items-center gap-2">
+                  <div class="rounded-md border border-sky-200 bg-white px-3 py-2">
+                    <div class="mb-1 text-xs font-semibold text-sky-700">DVT 初期</div>
+                    <div class="font-medium text-gray-900">1. Windows SUSI</div>
+                  </div>
+                  <div class="text-center text-lg font-bold text-sky-600">→</div>
+                  <div class="rounded-md border border-sky-200 bg-white px-3 py-2">
+                    <div class="mb-1 text-xs font-semibold text-sky-700">DVT 初期</div>
+                    <div class="font-medium text-gray-900">2. Ubuntu SUSI</div>
+                  </div>
+                  <div class="text-center text-lg font-bold text-sky-600">→</div>
+                  <div class="rounded-md border border-sky-200 bg-white px-3 py-2">
+                    <div class="mb-1 text-xs font-semibold text-sky-700">DVT</div>
+                    <div class="font-medium text-gray-900">3. Ubuntu OS</div>
+                  </div>
+                  <div class="text-center text-lg font-bold text-green-600">→</div>
+                  <div class="rounded-md border border-green-200 bg-green-50 px-3 py-2">
+                    <div class="mb-1 text-xs font-semibold text-green-700">PVT</div>
+                    <div class="font-medium text-gray-900">4. Windows OS</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="hardware-preparation" class="mt-5 scroll-mt-6 rounded-lg border border-slate-200 bg-white p-4">
+              <div class="mb-4">
+                <h5 class="font-semibold text-gray-900">樣品與硬體準備原則</h5>
+                <p class="mt-1 text-sm leading-6 text-gray-600">請依申請項目準備對應樣品與硬體條件，避免因樣品或配件不足延誤開發與驗證。</p>
+              </div>
+              <div class="space-y-4 text-sm leading-6 text-gray-700">
+                <section class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                  <h6 class="font-semibold text-blue-800">SUSI Porting 樣品準備原則</h6>
+                  <ul class="mt-3 list-disc list-outside space-y-1 pl-5">
+                    <li>提供標準可開機整機，須包含 CPU、RAM、硬碟、散熱片/散熱器與 Adapter，並可正常進入作業系統。</li>
+                    <li>如有外接模組且與 SUSI 功能相關，例如外接的 GPIO 擴充卡，則必需提供外接模組。</li>
+                  </ul>
+                </section>
+
+                <section class="rounded-lg border border-blue-100 bg-blue-50 p-4">
+                  <h6 class="mb-3 font-semibold text-blue-800">OS Image Porting 送測機器與硬體準備規範</h6>
+                  <div class="space-y-4">
+                    <div class="rounded-lg border border-blue-100 bg-white p-4"><h6 class="font-semibold text-gray-800 mb-2">1. 基礎出貨機器</h6><ul class="list-disc list-outside pl-5 space-y-1"><li>必須是標準可開機整機。</li><li>需包含 CPU、RAM、硬碟、散熱片/散熱器、Adapter。</li><li>若 PSU 有特殊高規格需求，須一併附上。</li></ul></div>
+                    <div class="rounded-lg border border-blue-100 bg-white p-4"><h6 class="font-semibold text-gray-800 mb-2">2. AMT 功能需求</h6><ul class="list-disc list-outside pl-5 space-y-1"><li>若有 AMT 功能，請提供有 AMT 功能的機器。 若機器可正常長出 AMT COM，也可作為 AMT 判定依據。</li><li>若 PCH 分不同 SKU，須提供有 AMT 的 PCH SKU。</li></ul></div>
+                    <div class="rounded-lg border border-blue-100 bg-white p-4"><h6 class="font-semibold text-gray-800 mb-2">3. 模組、擴充板與架構</h6><ul class="list-disc list-outside pl-5 space-y-1"><li>OS Image 若搭配擴充板，須提供擴充板。</li><li>採上下板或主板+載板架構者，上下板皆須提供。</li><li>若要安裝 WiFi/BT/NPU/外接顯卡等 Driver，且須提供對應 Module。</li></ul></div>
+                    <div class="rounded-lg border border-blue-100 bg-white p-4"><h6 class="font-semibold text-gray-800 mb-2">4. 線材與介面</h6><ul class="list-disc list-outside pl-5 space-y-1"><li>特殊車用或圓形連接器 I/O 必須提供線材。</li><li>如有非普通接頭的 Internal USB 則必須提供。</li><li>COM Port 線材若屬 Optional 但預設有長出，也必須提供。</li></ul></div>
+                    <div class="rounded-lg border border-blue-100 bg-white p-4"><h6 class="font-semibold text-gray-800 mb-2">5. I/O 與功能 SKU 選擇</h6><ul class="list-disc list-outside pl-5 space-y-1"><li>若同一型號存在不同 SKU，且各 SKU 的 LAN / COM Port 數量不同，請優先提供一台包含完整 I/O 配置的機器；若無完整 I/O SKU，則須提供所有差異 SKU 的機器。</li><li>若 COM/CANBus 共用 Port 優先提供 COM 機器。</li><li>Audio 轉板雖屬 Optional 仍須提供。例外情況：不裝 Driver、走 inbox，且 QA 不測 Audio 時，可不提供 Audio 轉板。</li></ul><div class="mt-4 rounded-lg border border-blue-100 bg-blue-50 p-4"><div class="text-sm font-semibold text-blue-800 mb-3">I/O SKU 判斷流程</div><div class="grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] md:items-center"><div class="rounded-md border border-blue-200 bg-white p-3"><div class="text-xs font-semibold text-blue-700 mb-1">Step 1</div><div class="font-medium text-gray-800">同一型號是否有不同 SKU？</div></div><div class="hidden md:block text-blue-500 font-bold text-center">→</div><div class="rounded-md border border-blue-200 bg-white p-3"><div class="text-xs font-semibold text-blue-700 mb-1">Step 2</div><div class="font-medium text-gray-800">LAN / COM Port 數量是否不同？</div></div><div class="hidden md:block text-blue-500 font-bold text-center">→</div><div class="rounded-md border border-green-200 bg-green-50 p-3"><div class="text-xs font-semibold text-green-700 mb-1">優先選項</div><div class="font-medium text-gray-800">提供一台完整 I/O SKU 機器</div></div><div class="hidden md:block text-blue-500 font-bold text-center">→</div><div class="rounded-md border border-amber-200 bg-amber-50 p-3"><div class="text-xs font-semibold text-amber-700 mb-1">若無完整 I/O SKU</div><div class="font-medium text-gray-800">提供所有差異 SKU 機器</div></div></div><div class="mt-3 text-sm text-gray-600">目的：確保 OS Image / Driver 驗證涵蓋所有 LAN、COM 與 I/O 差異。</div></div></div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </section>
+
+          <section id="value-added-services" class="mt-5 scroll-mt-6 rounded-xl border border-blue-100 bg-white p-4">
+            <div class="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between"><div><h4 class="font-semibold text-gray-900">2. Software Value-added Services</h4><p class="mt-1 text-sm leading-6 text-gray-600">請依專案預計導入項目查看相關說明；實際可行性、支援範圍仍需由 SW PM 協助內部確認。</p></div><span class="w-fit rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">加值配置</span></div>
+            <div class="mb-3 flex items-center border-b border-slate-200" role="tablist" aria-label="Software component category">
+              <button type="button" class="service-category-tab is-active" data-service-category="required" aria-selected="true">標準配置</button>
+              <button type="button" class="service-category-tab" data-service-category="advanced" aria-selected="false">進階配置</button>
+            </div>
+            <div class="mb-4 mt-3 flex flex-wrap gap-2" role="tablist" aria-label="Software value-added service requirements">
+              <button type="button" class="service-tab is-active" data-service-category="required" data-service-tab="power-suite" role="tab" aria-selected="true">Power Suite</button>
+              <button type="button" class="service-tab" data-service-category="required" data-service-tab="device-on" role="tab" aria-selected="false">Device On Agent</button>
+              <button type="button" class="service-tab" data-service-category="required" data-service-tab="weda" role="tab" aria-selected="false">WEDA Node(Ubuntu)</button>
+              <button type="button" class="service-tab" data-service-category="required" data-service-tab="edge-ai" role="tab" aria-selected="false">Edge AI SDK - Inference Kit</button>
+              <button type="button" class="service-tab" data-service-category="required" data-service-tab="cra" role="tab" aria-selected="false">CRA</button>
+              <button type="button" class="service-tab hidden" data-service-category="advanced" data-service-tab="gen-ai" role="tab" aria-selected="false">Edge AI SDK - Gen AI Studio</button>
+              <button type="button" class="service-tab hidden" data-service-category="advanced" data-service-tab="iec-62443" role="tab" aria-selected="false">IEC 62443</button>
+              <button type="button" class="service-tab hidden" data-service-category="advanced" data-service-tab="robotic-suite" role="tab" aria-selected="false">Robotic Suite</button>
+            </div>
+            <div class="service-panel hidden rounded-lg border border-gray-200 bg-white p-4" data-service-panel="edge-ai" role="tabpanel"><div class="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between"><h5 class="font-semibold text-gray-900">Edge AI SDK - Inference Kit</h5></div><div class="grid gap-3 text-sm leading-6 text-gray-700 md:grid-cols-2"><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">申請時機</div><p class="mt-1">無須額外開單申請，Bundle OS Image</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">啟動條件</div><p class="mt-1">由SW PM確認是否支援、提供含公版OS樣機</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">開發工時</div><p class="mt-1">約 15 man-days</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">說明</div><p class="mt-1">若需 NPU/GPU，須提供對應 Module。</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3 md:col-span-2"><div class="font-medium text-gray-900">樣品準備原則</div><ul class="mt-1 list-disc list-outside space-y-1 pl-5"><li>提供最高階 SKU。</li><li>Readiness 程度需達 PVT。</li><li>原廠需有論述 support AI。</li><li>提供的樣機需包含 OS。</li></ul></div></div></div>
+            <div class="service-panel hidden rounded-lg border border-gray-200 bg-white p-4" data-service-panel="cra" role="tabpanel"><div class="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between"><h5 class="font-semibold text-gray-900">CRA</h5></div><div class="grid gap-3 text-sm leading-6 text-gray-700 md:grid-cols-2"><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">申請時機</div><p class="mt-1">PVT 階段</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">啟動條件</div><p class="mt-1">標準 OS 單完成</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">開發工時</div><p class="mt-1">目前無法估計</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">說明</div><p class="mt-1">需與 Alexx 確認 CRA 需求與申請項目。</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3 md:col-span-2"><div class="font-medium text-gray-900">樣品準備原則</div><p class="mt-1">請依 OS Image 送測機器與硬體準備規範提供標準可開機樣品，並確認標準 OS 單已完成。</p></div></div></div>
+            <div class="service-panel hidden rounded-lg border border-gray-200 bg-white p-4" data-service-panel="weda" role="tabpanel"><div class="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between"><h5 class="font-semibold text-gray-900">WEDA Node(Ubuntu)</h5></div><div class="grid gap-3 text-sm leading-6 text-gray-700 md:grid-cols-2"><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">申請時機</div><p class="mt-1">無須額外開單申請，Bundle OS Image</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">啟動條件</div><p class="mt-1">完成新增產品至<a href="https://learn.advantech.com/weda/docs/WEDA_Certified_Hardware/WEDA_Edge/" target="_blank" rel="noopener noreferrer" onclick="window.open(this.href, '_blank', 'noopener,noreferrer'); return false;" class="font-medium text-slate-700 underline decoration-slate-400 decoration-1 underline-offset-4 hover:text-slate-900">Certified HW List</a>，並已開立Ubuntu STD OS Porting eFlow單</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">開發工時</div><p class="mt-1">同OS Image進行開發</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">說明</div><p class="mt-1">WEDA Node由WEDA團隊開發SW，出貨時將放於OS Image中。</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3 md:col-span-2"><div class="font-medium text-gray-900">樣品準備原則</div><p class="mt-1">WEDA 驗證由PD AE團隊進行驗證，請HW PM提供機台給AE協助。驗證完畢後，須提供驗證結果截圖給WEDA 團隊，進行產品新增至<a href="https://learn.advantech.com/weda/docs/WEDA_Certified_Hardware/WEDA_Edge/" target="_blank" rel="noopener noreferrer" onclick="window.open(this.href, '_blank', 'noopener,noreferrer'); return false;" class="font-medium text-slate-700 underline decoration-slate-400 decoration-1 underline-offset-4 hover:text-slate-900">Certified HW List</a>的流程，再請SW 團隊將此SW 包入到OS Image中一同出貨。</p></div></div></div>
+            <div class="service-panel hidden rounded-lg border border-gray-200 bg-white p-4" data-service-panel="device-on" role="tabpanel"><div class="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between"><h5 class="font-semibold text-gray-900">Device On Agent</h5></div><div class="grid gap-3 text-sm leading-6 text-gray-700 md:grid-cols-2"><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">申請時機</div><p class="mt-1">無須額外開單申請，Bundle OS Image</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">啟動條件</div><p class="mt-1">已開立STD OS porting eFlow單</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">開發工時</div><p class="mt-1">同OS Image進行開發</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">說明</div><p class="mt-1">Device On Agent為內部團隊開發SW，出貨時將放於OS Image中。</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3 md:col-span-2"><div class="font-medium text-gray-900">樣品準備原則</div><p class="mt-1">驗證於OS Image測試時完成，無須額外準備樣品進行此SW驗證。</p></div></div></div>
+            <div class="service-panel rounded-lg border border-gray-200 bg-white p-4" data-service-panel="power-suite" role="tabpanel"><div class="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between"><h5 class="font-semibold text-gray-900">Power Suite</h5></div><div class="grid gap-3 text-sm leading-6 text-gray-700 md:grid-cols-2"><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">申請時機</div><p class="mt-1">無須額外開單申請，Bundle OS Image</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">啟動條件</div><p class="mt-1">已開立STD OS porting eFlow單</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">開發工時</div><p class="mt-1">同OS Image進行開發</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">說明</div><p class="mt-1">Power Suite為內部團隊開發SW，出貨時將放於OS Image中。</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3 md:col-span-2"><div class="font-medium text-gray-900">樣品準備原則</div><p class="mt-1">驗證於OS Image測試時完成，無須額外準備樣品進行此SW驗證。</p></div></div></div>
+            <div class="service-panel hidden rounded-lg border border-gray-200 bg-white p-4" data-service-panel="gen-ai" role="tabpanel"><div class="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between"><h5 class="font-semibold text-gray-900">Edge AI SDK - Gen AI Studio</h5></div><div class="grid gap-3 text-sm leading-6 text-gray-700 md:grid-cols-2"><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">申請時機</div><p class="mt-1">依專案需求確認</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">啟動條件</div><p class="mt-1">由 SW PM 確認是否支援</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">開發工時</div><p class="mt-1">由 SW PM 評估</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">說明</div><p class="mt-1">需確認 Gen AI Studio 導入需求、AI 模組與 OS Image 條件。</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3 md:col-span-2"><div class="font-medium text-gray-900">樣品準備原則</div><p class="mt-1">請提供可支援 AI 驗證的樣機、OS 與必要加速模組。</p></div></div></div>
+            <div class="service-panel hidden rounded-lg border border-gray-200 bg-white p-4" data-service-panel="iec-62443" role="tabpanel"><div class="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between"><h5 class="font-semibold text-gray-900">IEC 62443</h5></div><div class="grid gap-3 text-sm leading-6 text-gray-700 md:grid-cols-2"><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">申請時機</div><p class="mt-1">PVT 階段</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">啟動條件</div><p class="mt-1">標準 OS 單完成</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">開發工時</div><p class="mt-1">約 10 man-days</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3"><div class="font-medium text-gray-900">說明</div><p class="mt-1">需與 Alexx 確認資安需求與申請項目。</p></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3 md:col-span-2"><div class="font-medium text-gray-900">樣品準備原則</div><p class="mt-1">請依 OS Image 送測機器與硬體準備規範提供標準可開機樣品，並確認標準 OS 單已完成。</p></div></div></div>
+            <div class="service-panel hidden rounded-lg border border-gray-200 bg-white p-4" data-service-panel="robotic-suite" role="tabpanel"><div class="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between"><h5 class="font-semibold text-gray-900">Robotic Suite</h5></div><div class="rounded-md border border-slate-100 bg-slate-50 p-3 text-sm leading-6 text-gray-700">僅限於AS&amp;R PD 產品適用</div></div>
+          </section>
+        </div>
+
+      <div class="hidden" data-temporarily-hidden="project-information-and-below">
+      <section id="project-info" class="mb-8 scroll-mt-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <div class="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900">Project Information</h2>
+            <p class="mt-1 text-sm text-gray-600">
+              請 HW PM 提供專案相關資訊，再由SW團隊接手進行可行性評估。
+            </p>
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <div>
+            <label for="project-code" class="mb-1 block text-sm font-medium text-gray-700">Project Code</label>
+            <input id="project-code" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" placeholder="例如：AIMB-789" />
+          </div>
+          <div>
+            <label for="project-owner" class="mb-1 block text-sm font-medium text-gray-700">Project Owner</label>
+            <input id="project-owner" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" placeholder="例如：Jessica.Hsu" />
+          </div>
+          <div>
+            <label for="pdcp-date" class="mb-1 block text-sm font-medium text-gray-700">PDCP date</label>
+            <input id="pdcp-date" type="date" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" />
+          </div>
+          <div>
+            <label for="cpu-platform" class="mb-1 block text-sm font-medium text-gray-700">CPU Platform</label>
+            <input id="cpu-platform" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" placeholder="例如：Intel Alder Lake / AMD Ryzen" />
+          </div>
+        </div>
+
+        <div class="mt-5 grid gap-4 md:grid-cols-3">
+          <div>
+            <label for="project-dvt-date" class="mb-1 block text-sm font-medium text-gray-700">DVT planned date</label>
+            <input id="project-dvt-date" type="date" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" />
+          </div>
+          <div>
+            <label for="project-pvt-date" class="mb-1 block text-sm font-medium text-gray-700">PVT planned date</label>
+            <input id="project-pvt-date" type="date" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" />
+          </div>
+          <div>
+            <label for="project-mp-date" class="mb-1 block text-sm font-medium text-gray-700">MP planned date</label>
+            <input id="project-mp-date" type="date" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" />
+          </div>
+        </div>
+
+        <div class="mt-5 grid gap-5 md:grid-cols-2">
+          <fieldset class="rounded-lg border border-gray-200 p-4">
+            <legend class="px-1 text-sm font-semibold text-gray-800">OS support</legend>
+            <div class="mt-3 grid gap-2 text-sm text-gray-700 sm:grid-cols-2">
+              <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600" /> Windows</label>
+              <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600" /> Ubuntu</label>
+              <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600" /> Yocto / Linux BSP</label>
+              <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600" /> Other</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="rounded-lg border border-gray-200 p-4">
+            <legend class="px-1 text-sm font-semibold text-gray-800">SW components</legend>
+            <div class="mt-3 space-y-2 text-sm text-gray-700">
+              <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600" /> Edge AI SDK - inference kit</label>
+              <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600" /> Edge AI SDK - GenAI Studio</label>
+              <label class="flex items-center gap-2"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600" /> IEC-62443</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="mt-5 rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4">
+          <label for="por-upload" class="mb-2 block text-sm font-semibold text-gray-800">Upload POR document</label>
+          <input id="por-upload" type="file" class="block w-full text-sm text-gray-700 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx" />
+          <p class="mt-2 text-xs text-gray-500">Accepted formats: PDF, Word, PowerPoint, Excel.</p>
+        </div>
+
+        <div class="mt-5 flex flex-col gap-3 border-t border-gray-100 pt-5 sm:flex-row sm:items-center sm:justify-end">
+          <button id="project-submit-button" type="button" class="inline-flex items-center justify-center rounded-md bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-200">
+            Submit project information
+          </button>
+        </div>
+      </section>
+
+      <div id="project-submit-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/40 p-4" role="dialog" aria-modal="true" aria-labelledby="project-submit-modal-title">
+        <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-700">
+            <span class="text-2xl leading-none">✓</span>
+          </div>
+          <h2 id="project-submit-modal-title" class="text-lg font-bold text-gray-900">資料已成功提交</h2>
+          <p class="mt-2 text-sm leading-6 text-gray-600">預計於10個工作天後提供可行性評估報告</p>
+          <div class="mt-6 flex justify-end">
+            <button id="project-submit-modal-close" type="button" class="rounded-md bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-200">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-8 p-4 rounded-lg border border-gray-200 bg-gray-50 hidden">
+        <h2 class="text-lg font-semibold text-gray-800 mb-3">HW PM 填寫欄位</h2>
+        <div class="grid md:grid-cols-4 gap-4">
+          <div>
+            <label for="platform-name" class="block text-sm font-medium text-gray-700 mb-1">Platform Name</label>
+            <input id="platform-name" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2" placeholder="例如：AIMB-789" />
+          </div>
+          <div>
+            <label for="owner" class="block text-sm font-medium text-gray-700 mb-1">Owner</label>
+            <input id="owner" type="text" class="w-full rounded-md border border-gray-300 px-3 py-2" placeholder="例如：Daniel.Tsai" />
+          </div>
+          <div>
+            <label for="dvt-date" class="block text-sm font-medium text-gray-700 mb-1">DVT 時間</label>
+            <select id="dvt-date" class="w-full rounded-md border border-gray-300 px-3 py-2 bg-white">
+              <option value="">請選擇年月</option>
+            </select>
+          </div>
+          <div>
+            <label for="pvt-date" class="block text-sm font-medium text-gray-700 mb-1">PVT 時間</label>
+            <select id="pvt-date" class="w-full rounded-md border border-gray-300 px-3 py-2 bg-white">
+              <option value="">請選擇年月</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 hidden">
+        <div>
+          <h2 class="text-lg font-semibold text-blue-700 mb-3">1. 作業系統 (OS)</h2>
+          <div class="space-y-2" id="os-list">
+            <label class="flex items-center space-x-2"><input type="checkbox" name="os" value="Windows 11 IoT Enterprise LTSC 2024"> <span>Windows 11 IoT Enterprise LTSC 2024</span></label>
+            <label class="flex items-center space-x-2"><input type="checkbox" name="os" value="Ubuntu 24.04"> <span>Ubuntu 26.04</span></label>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-lg font-semibold text-blue-700 mb-3">2. 軟體加值</h2>
+          <div class="space-y-2" id="app-list">
+            <label class="flex items-center space-x-2"><input type="checkbox" name="app" value="SUSI" checked disabled> <span>SUSI（必填）</span></label>
+            <label class="flex items-center space-x-2"><input type="checkbox" name="app" value="IEC 62443-4-2"> <span>IEC 62443-4-2</span></label>
+            <label class="flex items-center space-x-2"><input type="checkbox" name="app" value="RED DA EN18031"> <span>RED DA EN18031</span></label>
+            <label class="flex items-center space-x-2"><input type="checkbox" name="app" value="Edge AI SDK"> <span>Edge AI SDK</span></label>
+            <label class="flex items-center space-x-2"><input type="checkbox" name="app" value="WEDA"> <span>WEDA</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 pt-6 border-t border-gray-200 hidden">
+        <h2 class="text-xl font-bold text-gray-800 mb-2">測試設備送測需求清單</h2>
+        <p class="text-gray-600 mb-6">請根據本次送測機器規格勾選。勾選內容會自動整合到下方「HW PM 申請時程表」的申請條件/說明。</p>
+
+        <div class="space-y-6 text-gray-700">
+          <section class="rounded-lg border border-gray-200 p-4 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">[A] 基礎確認項目</h3>
+            <div class="space-y-3">
+              <div>
+                <span class="font-medium">系統/板卡：</span>包含 CPU、RAM、硬碟、散熱模組及標準 Adapter。
+              </div>
+              <div>
+                <span class="font-medium">電源需求：</span>若有特殊高規格 PSU 需求，已一併隨機附上。
+              </div>
+            </div>
+          </section>
+
+          <section class="rounded-lg border border-gray-200 p-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">[B] 功能/架構需求（依硬體實際規格勾選）</h3>
+            <div class="space-y-3">
+              <label class="flex items-start gap-2">
+                <input type="checkbox" class="mt-1 req-check" data-note="AMT 判定以可長出 AMT COM 為主；若為 vPro 機器建議提供 High-end CPU；PCH 多 SKU 時需提供 AMT SKU。" />
+                <span>AMT/vPro 功能</span>
+              </label>
+              <label class="flex items-start gap-2">
+                <input type="checkbox" class="mt-1 req-check" data-note="上下板或主板+載板架構皆須提供；若有擴充板須一併送測。" />
+                <span>上下板/擴充板</span>
+              </label>
+              <label class="flex items-start gap-2">
+                <input type="checkbox" class="mt-1 req-check" data-note="若同一型號存在不同 SKU，且各 SKU 的 LAN / COM Port 數量不同，請優先提供一台包含完整 I/O 配置的機器；若無完整 I/O SKU，則須提供所有差異 SKU 的機器。COM/CAN 共用時優先提供 COM，若需 CAN 請安排 Rework。" />
+                <span>I/O 多樣性/SKU 差異</span>
+              </label>
+              <label class="flex items-start gap-2">
+                <input type="checkbox" class="mt-1 req-check" data-note="車用/圓形接頭線材、特殊 Internal USB、出貨即有的 COM 線材需主動提供。" />
+                <span>特殊介面/線材</span>
+              </label>
+              <label class="flex items-start gap-2">
+                <input type="checkbox" class="mt-1 req-check" data-note="若需安裝 WiFi/BT/NPU/外接顯卡驅動，必須提供對應 Module。" />
+                <span>無線/加速模組 (WiFi/BT/NPU/GPU)</span>
+              </label>
+              <label class="flex items-start gap-2">
+                <input type="checkbox" class="mt-1 req-check" data-note="Audio 轉板即使 Optional 也須提供；僅在不裝專屬 Driver 且 QA 不測 Audio 時可例外。" />
+                <span>Audio 轉板</span>
+              </label>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="mt-8 pt-6 border-t border-gray-200 hidden">
+        <h2 class="text-lg font-semibold text-gray-800 mb-3">結果</h2>
+        <div id="result" class="bg-gray-100 p-4 rounded-lg text-gray-700 min-h-[100px]">
+          請先勾選 OS 與軟體加值項目。
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-xl shadow-lg p-6 hidden">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">補充規則</h2>
+
+      <div class="mt-2">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">SUSI Driver 規則</h3>
+        <ul class="list-disc list-inside space-y-2 text-gray-700">
+          <li>Windows SUSI 在 DVT 階段就可申請 Porting；且完成 Windows SUSI 後才會接續 Ubuntu SUSI。</li>
+          <li>Windows SUSI 需提供 SUSI Request Form 與 VGA Driver。</li>
+          <li>Ubuntu SUSI 會依照 Windows SUSI 的功能範圍製作。</li>
+        </ul>
+      </div>
+
+      <div class="mt-6 pt-4 border-t border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Windows OS Image 規則</h3>
+        <ul class="list-disc list-inside space-y-2 text-gray-700">
+          <li>PVT 階段後才能申請 OS Image Porting。</li>
+        </ul>
+      </div>
+    </section>
+      </div>
+  </main>
+
+  <script>
+    const dvtDateSelect = document.getElementById('dvt-date');
+    const pvtDateSelect = document.getElementById('pvt-date');
+    const osCheckboxes = document.querySelectorAll('input[name="os"]');
+    const appCheckboxes = document.querySelectorAll('input[name="app"]');
+    const reqChecks = document.querySelectorAll('.req-check');
+    const resultDiv = document.getElementById('result');
+    const projectSubmitButton = document.getElementById('project-submit-button');
+
+    const serviceCategoryTabs = document.querySelectorAll('.service-category-tab');
+    const serviceTabs = document.querySelectorAll('.service-tab');
+    const servicePanels = document.querySelectorAll('.service-panel');
+
+    function setActiveButton(buttons, activeButton) {
+      buttons.forEach(item => {
+        const isActive = item === activeButton;
+        item.setAttribute('aria-selected', String(isActive));
+        item.classList.toggle('is-active', isActive);
+      });
+    }
+
+    function activateService(tab) {
+      if (!tab) return;
+      setActiveButton(serviceTabs, tab);
+      servicePanels.forEach(panel => {
+        panel.classList.toggle('hidden', panel.dataset.servicePanel !== tab.dataset.serviceTab);
+      });
+    }
+
+    function activateServiceCategory(categoryTab) {
+      if (!categoryTab) return;
+      const category = categoryTab.dataset.serviceCategory;
+      setActiveButton(serviceCategoryTabs, categoryTab);
+      serviceTabs.forEach(tab => {
+        tab.classList.toggle('hidden', tab.dataset.serviceCategory !== category);
+      });
+      const firstVisibleTab = Array.from(serviceTabs).find(tab => tab.dataset.serviceCategory === category);
+      activateService(firstVisibleTab);
+    }
+
+    serviceCategoryTabs.forEach(tab => {
+      tab.addEventListener('click', () => activateServiceCategory(tab));
+    });
+
+    serviceTabs.forEach(tab => {
+      tab.addEventListener('click', () => activateService(tab));
+    });
+
+    const projectSubmitModal = document.getElementById('project-submit-modal');
+    const projectSubmitModalClose = document.getElementById('project-submit-modal-close');
+
+    function populateDateOptions(selectEl) {
+      const today = new Date();
+      for (let offset = 0; offset < 12; offset += 1) {
+        const optionDate = new Date(today.getFullYear(), today.getMonth() + offset, 1);
+        const year = optionDate.getFullYear();
+        const monthText = String(optionDate.getMonth() + 1).padStart(2, '0');
+        const value = `${year}/${monthText}`;
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value;
+        selectEl.appendChild(option);
+      }
+    }
+
+    function getRequirementNotes() {
+      return Array.from(reqChecks)
+        .filter(c => c.checked)
+        .map(c => {
+          const label = c.closest('label');
+          const titleNode = label ? label.querySelector('span') : null;
+          const title = titleNode ? titleNode.textContent.trim() : '';
+          const note = c.dataset.note;
+          if (!title || !note) return null;
+          return { title, note };
+        })
+        .filter(Boolean);
+    }
+
+    function updateResult() {
+      const selectedOS = Array.from(osCheckboxes).filter(i => i.checked).map(i => i.value);
+      const selectedApps = Array.from(appCheckboxes).filter(i => i.checked).map(i => i.value);
+      const reqNotes = getRequirementNotes();
+      const requestItems = buildRequestItems(selectedOS, selectedApps);
+
+      if (selectedOS.length === 0) {
+        resultDiv.innerHTML = '<div class="text-gray-600">請至少勾選一個 OS。</div>';
+        return;
+      }
+
+      let html = '<div class="space-y-4">';
+      html += '<div><div class="font-semibold text-gray-800 mb-2">eflow申請項目以及時程表（DVT → PVT）</div>';
+      html += updatePmScheduleTable(requestItems, selectedOS, reqNotes);
+      html += '</div></div>';
+      resultDiv.innerHTML = html;
+    }
+
+    function mergeNote(base, reqNotes) {
+      if (!reqNotes || reqNotes.length === 0) return base;
+      const extra = reqNotes
+        .map(({ title, note }) => `<span class="text-red-600 font-semibold">${title}</span><br /><span class="text-gray-700">${note}</span>`)
+        .join('<br />');
+      return `${base}<br />${extra}`;
+    }
+
+    function buildRequestItems(selectedOS, selectedApps) {
+      const items = [];
+      selectedOS.forEach(os => {
+        const isUbuntu = os.toLowerCase().includes('ubuntu');
+        if (isUbuntu) {
+          items.push({ type: 'os', os, app: '', ticket: `${os} Desktop` });
+          items.push({ type: 'os', os, app: '', ticket: `${os} Pro` });
+          return;
+        }
+
+        items.push({ type: 'os', os, app: '', ticket: os });
+      });
+      selectedOS.forEach(os => {
+        selectedApps.forEach(app => {
+          items.push({ type: 'app', os, app, ticket: `${app} for ${os}` });
+        });
+      });
+      return items;
+    }
+
+    function updatePmScheduleTable(requestItems, selectedOS, reqNotes) {
+      const hasWindows = selectedOS.some(os => os.toLowerCase().includes('windows'));
+      const rows = [];
+
+      function getStageOrder(stage) {
+        return stage.includes('PVT') ? 2 : 1; // DVT -> PVT
+      }
+
+      function getTypeOrder(ticket) {
+        const t = ticket.toLowerCase();
+        if (t.includes('susi')) return 1; // SUSI -> OS
+        return 2;
+      }
+
+      function getSusiOrder(ticket) {
+        const t = ticket.toLowerCase();
+        if (!t.includes('susi')) return 3;
+        if (t.includes('windows')) return 1; // Windows SUSI 優先
+        if (t.includes('linux') || t.includes('ubuntu')) return 2;
+        return 3;
+      }
+
+      function getOsOrder(ticket) {
+        const t = ticket.toLowerCase();
+        if (t.includes('windows')) return 1; // Windows 優先
+        if (t.includes('ubuntu') || t.includes('linux')) return 2;
+        return 3;
+      }
+
+      function getTailOrder(ticket) {
+        const t = ticket.toLowerCase();
+        if (t.includes('iec 62443-4-2') || t.includes('red da en18031')) return 2; // 放最後
+        return 1;
+      }
+
+      function isIecOrRedTicket(ticket) {
+        const t = ticket.toLowerCase();
+        return t.includes('iec 62443-4-2') || t.includes('red da en18031');
+      }
+
+      requestItems.forEach(item => {
+        const osLower = item.os.toLowerCase();
+        const isWindows = osLower.includes('windows');
+        const isLinux = osLower.includes('ubuntu') || osLower.includes('linux');
+
+        if (item.type === 'os') {
+          if (isWindows) {
+            rows.push({
+              stage: 'PVT（PVT 後）',
+              ticket: item.ticket,
+              note: mergeNote('Windows OS Image 僅能在 PVT 階段後申請。', reqNotes),
+              _stageOrder: getStageOrder('PVT'),
+              _typeOrder: getTypeOrder(item.ticket),
+              _susiOrder: getSusiOrder(item.ticket),
+              _osOrder: getOsOrder(item.ticket),
+              _tailOrder: getTailOrder(item.ticket),
+            });
+          } else if (isLinux) {
+            rows.push({
+              stage: 'DVT（DVT 後）',
+              ticket: item.ticket,
+              note: 'Ubuntu OS Image 於 DVT 階段後申請。',
+              _stageOrder: getStageOrder('DVT'),
+              _typeOrder: getTypeOrder(item.ticket),
+              _susiOrder: getSusiOrder(item.ticket),
+              _osOrder: getOsOrder(item.ticket),
+              _tailOrder: getTailOrder(item.ticket),
+            });
+          } else {
+            rows.push({
+              stage: 'DVT（依專案規劃）',
+              ticket: item.ticket,
+              note: '依專案時程規劃申請。',
+              _stageOrder: getStageOrder('DVT'),
+              _typeOrder: getTypeOrder(item.ticket),
+              _susiOrder: getSusiOrder(item.ticket),
+              _osOrder: getOsOrder(item.ticket),
+              _tailOrder: getTailOrder(item.ticket),
+            });
+          }
+          return;
+        }
+
+        if (item.app === 'SUSI') {
+          if (isWindows) {
+            rows.push({
+              stage: 'DVT（初期即可）',
+              ticket: item.ticket,
+              note: '需提供 SUSI Request Form 與 VGA Driver。',
+              _stageOrder: getStageOrder('DVT'),
+              _typeOrder: getTypeOrder(item.ticket),
+              _susiOrder: getSusiOrder(item.ticket),
+              _osOrder: getOsOrder(item.ticket),
+              _tailOrder: getTailOrder(item.ticket),
+            });
+          } else if (isLinux) {
+            rows.push({
+              stage: hasWindows ? 'DVT（於 Windows SUSI 完成後）' : 'DVT（需先補 Windows SUSI）',
+              ticket: item.ticket,
+              note: hasWindows
+                ? '必須先完成 Windows SUSI；Linux SUSI 依 Windows SUSI 功能範圍製作。'
+                : 'Linux SUSI 依 Windows SUSI 功能範圍製作；若未選 Windows，仍需先補申請 Windows SUSI。',
+              _stageOrder: getStageOrder('DVT'),
+              _typeOrder: getTypeOrder(item.ticket),
+              _susiOrder: getSusiOrder(item.ticket),
+              _osOrder: getOsOrder(item.ticket),
+              _tailOrder: getTailOrder(item.ticket),
+            });
+          } else {
+            rows.push({
+              stage: 'DVT（依專案規劃）',
+              ticket: item.ticket,
+              note: 'SUSI 申請依專案時程規劃。',
+              _stageOrder: getStageOrder('DVT'),
+              _typeOrder: getTypeOrder(item.ticket),
+              _susiOrder: getSusiOrder(item.ticket),
+              _osOrder: getOsOrder(item.ticket),
+              _tailOrder: getTailOrder(item.ticket),
+            });
+          }
+          return;
+        }
+
+        const iecOrRed = isIecOrRedTicket(item.ticket);
+        if (iecOrRed && (isWindows || isLinux)) {
+          rows.push({
+            stage: 'PVT（標準 OS 單後）',
+            ticket: item.ticket,
+            note: 'IEC 62443-4-2 / RED DA EN18031 相關 OS 單，須於標準 OS 單完成後才可申請。',
+            _stageOrder: getStageOrder('PVT'),
+            _typeOrder: getTypeOrder(item.ticket),
+            _susiOrder: getSusiOrder(item.ticket),
+            _osOrder: getOsOrder(item.ticket),
+            _tailOrder: getTailOrder(item.ticket),
+          });
+        } else {
+          rows.push({
+            stage: 'DVT（依專案規劃）',
+            ticket: item.ticket,
+            note: '依專案與測試需求規劃申請。',
+            _stageOrder: getStageOrder('DVT'),
+            _typeOrder: getTypeOrder(item.ticket),
+            _susiOrder: getSusiOrder(item.ticket),
+            _osOrder: getOsOrder(item.ticket),
+            _tailOrder: getTailOrder(item.ticket),
+          });
+        }
+      });
+
+      rows.sort((a, b) => {
+        if (a._stageOrder !== b._stageOrder) return a._stageOrder - b._stageOrder;
+        if (a._tailOrder !== b._tailOrder) return a._tailOrder - b._tailOrder;
+        if (a._typeOrder !== b._typeOrder) return a._typeOrder - b._typeOrder;
+        if (a._susiOrder !== b._susiOrder) return a._susiOrder - b._susiOrder;
+        if (a._osOrder !== b._osOrder) return a._osOrder - b._osOrder;
+        return a.ticket.localeCompare(b.ticket, 'zh-Hant');
+      });
+
+      if (rows.length === 0) {
+        return '<div class="text-gray-500">依目前勾選內容，尚無對應的固定時程申請單。</div>';
+      }
+
+      const bodyHtml = rows.map((r, idx) => `
+        <tr>
+          <td class="border border-gray-200 px-3 py-2">${idx + 1}</td>
+          <td class="border border-gray-200 px-3 py-2">${r.stage}</td>
+          <td class="border border-gray-200 px-3 py-2">${r.ticket}</td>
+          <td class="border border-gray-200 px-3 py-2 whitespace-normal break-words leading-relaxed">${r.note}</td>
+        </tr>
+      `).join('');
+
+      return `
+        <div class="overflow-x-auto">
+          <table class="min-w-full border border-gray-200 text-sm bg-white">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="border border-gray-200 px-3 py-2 text-left">順序</th>
+                <th class="border border-gray-200 px-3 py-2 text-left">階段</th>
+                <th class="border border-gray-200 px-3 py-2 text-left">HW PM 要申請的 eFlow 單</th>
+                <th class="border border-gray-200 px-3 py-2 text-left">申請條件 / 說明</th>
+              </tr>
+            </thead>
+            <tbody>${bodyHtml}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    [...osCheckboxes, ...appCheckboxes, ...reqChecks].forEach(el => {
+      el.addEventListener('change', updateResult);
+    });
+
+    function closeProjectSubmitModal() {
+      if (projectSubmitModal) {
+        projectSubmitModal.classList.add('hidden');
+        projectSubmitModal.classList.remove('flex');
+      }
+    }
+
+    if (projectSubmitButton && projectSubmitModal) {
+      projectSubmitButton.addEventListener('click', () => {
+        projectSubmitModal.classList.remove('hidden');
+        projectSubmitModal.classList.add('flex');
+      });
+    }
+
+    if (projectSubmitModalClose) {
+      projectSubmitModalClose.addEventListener('click', closeProjectSubmitModal);
+    }
+
+    if (projectSubmitModal) {
+      projectSubmitModal.addEventListener('click', event => {
+        if (event.target === projectSubmitModal) {
+          closeProjectSubmitModal();
+        }
+      });
+    }
+
+    [dvtDateSelect, pvtDateSelect].forEach(populateDateOptions);
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

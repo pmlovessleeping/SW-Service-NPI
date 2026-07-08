@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SW Service NPI Guideline</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">NPI Planning Guide</p>
+      <h1>SW Service NPI Guideline</h1>
+      <p class="lead">
+        A practical guide for HW PMs to engage SW PMs early, prepare the right inputs,
+        and align software planning output during NPI.
+      </p>
+    </div>
+    <nav class="quick-nav" aria-label="Guideline sections">
+      <a href="#overview">Overview</a>
+      <a href="#timing">Timing</a>
+      <a href="#flow">Planning Flow</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#output">Output</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="overview" class="section-band">
+      <div class="section-heading">
+        <p class="eyebrow">Purpose</p>
+        <h2>When HW PM should engage SW PM</h2>
+      </div>
+      <div class="content-grid">
+        <article class="info-card">
+          <h3>Use this guideline when</h3>
+          <ul>
+            <li>A new NPI project requires software service planning.</li>
+            <li>Sample quantity, configuration, or schedule is not yet clear.</li>
+            <li>The project may reuse an existing platform or introduce a new one.</li>
+            <li>HW PM needs SW PM input before committing the NPI plan.</li>
+          </ul>
+        </article>
+        <article class="info-card">
+          <h3>Expected outcome</h3>
+          <ul>
+            <li>Clear SW request timing and required inputs.</li>
+            <li>Aligned sample preparation logic.</li>
+            <li>Lead time expectation for new and existing platforms.</li>
+            <li>A structured SW Planning Output that can be reviewed and tracked.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="timing" class="section-band muted">
+      <div class="section-heading">
+        <p class="eyebrow">Request Timing</p>
+        <h2>Engage SW PM before NPI assumptions become fixed</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-step">
+          <span>1</span>
+          <h3>Initial NPI Planning</h3>
+          <p>HW PM identifies whether software service, tool, image, automation, or validation support may be needed.</p>
+        </div>
+        <div class="timeline-step">
+          <span>2</span>
+          <h3>Pre-meeting Preparation</h3>
+          <p>HW PM collects platform, schedule, sample, and dependency information before meeting SW PM.</p>
+        </div>
+        <div class="timeline-step">
+          <span>3</span>
+          <h3>SW Planning Review</h3>
+          <p>HW PM and SW PM confirm scope, lead time, R&amp;R, risks, and planning output.</p>
+        </div>
+        <div class="timeline-step">
+          <span>4</span>
+          <h3>NPI Plan Commitment</h3>
+          <p>Agreed software assumptions are reflected in the NPI plan and tracked through execution.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow" class="section-band">
+      <div class="section-heading">
+        <p class="eyebrow">Planning Flow</p>
+        <h2>SW planning decision path</h2>
+      </div>
+      <div class="flow-panel">
+        <div class="flow-item">
+          <strong>Confirm platform type</strong>
+          <p>Classify the project as new platform, existing platform, or platform leading project.</p>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-item">
+          <strong>Clarify request scope</strong>
+          <p>Identify required SW deliverables, sample support, tools, validation, and schedule dependencies.</p>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-item">
+          <strong>Estimate lead time</strong>
+          <p>Use the reference table and SW PM judgment to align the planning baseline.</p>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-item">
+          <strong>Publish output</strong>
+          <p>Document R&amp;R, key dates, sample assumptions, risks, and next actions.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sample" class="section-band muted">
+      <div class="section-heading">
+        <p class="eyebrow">Sample Logic</p>
+        <h2>Sample preparation criteria</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Criteria</th>
+              <th>Planning Question</th>
+              <th>Output Needed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Platform</td>
+              <td>Is this a new, existing, or leading platform?</td>
+              <td>Platform classification and reuse assumption.</td>
+            </tr>
+            <tr>
+              <td>Configuration</td>
+              <td>Which HW/SW configurations require validation?</td>
+              <td>Sample matrix and priority.</td>
+            </tr>
+            <tr>
+              <td>Schedule</td>
+              <td>When are samples available for SW work?</td>
+              <td>Sample readiness date and risk notes.</td>
+            </tr>
+            <tr>
+              <td>Ownership</td>
+              <td>Who prepares, ships, flashes, and maintains samples?</td>
+              <td>HW PM / SW PM / team R&amp;R.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="lead-time" class="section-band">
+      <div class="section-heading">
+        <p class="eyebrow">Lead Time</p>
+        <h2>Reference baseline</h2>
+      </div>
+      <div class="content-grid three">
+        <article class="info-card">
+          <h3>Existing platform</h3>
+          <p>Use when the project reuses a known platform and software changes are limited.</p>
+          <strong>Baseline: confirm with SW PM</strong>
+        </article>
+        <article class="info-card">
+          <h3>New platform</h3>
+          <p>Use when platform bring-up, new dependency, or new validation flow is required.</p>
+          <strong>Baseline: requires early review</strong>
+        </article>
+        <article class="info-card">
+          <h3>Platform leading project</h3>
+          <p>Use when this project defines the reusable baseline for later projects.</p>
+          <strong>Baseline: align roadmap impact</strong>
+        </article>
+      </div>
+    </section>
+
+    <section id="rr" class="section-band muted">
+      <div class="section-heading">
+        <p class="eyebrow">R&amp;R</p>
+        <h2>HW PM and SW PM responsibilities</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Area</th>
+              <th>HW PM</th>
+              <th>SW PM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Request initiation</td>
+              <td>Raise SW planning needs during NPI planning.</td>
+              <td>Confirm SW engagement model and required inputs.</td>
+            </tr>
+            <tr>
+              <td>Sample planning</td>
+              <td>Provide sample schedule, configuration, and quantity assumptions.</td>
+              <td>Review sample suitability for SW work and validation.</td>
+            </tr>
+            <tr>
+              <td>Lead time</td>
+              <td>Share NPI milestone expectations.</td>
+              <td>Provide software planning lead time and risk notes.</td>
+            </tr>
+            <tr>
+              <td>Tracking</td>
+              <td>Track NPI commitment and dependency closure.</td>
+              <td>Track SW deliverables, blockers, and planning output updates.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="checklist" class="section-band">
+      <div class="section-heading">
+        <p class="eyebrow">Pre-meeting</p>
+        <h2>Checklist before meeting SW PM</h2>
+      </div>
+      <div class="checklist" aria-label="Pre-meeting checklist">
+        <label><input type="checkbox"> Project name, NPI phase, and key milestones are available.</label>
+        <label><input type="checkbox"> Platform type is identified or open questions are listed.</label>
+        <label><input type="checkbox"> Sample quantity, configuration, and readiness date are drafted.</label>
+        <label><input type="checkbox"> Expected SW deliverables or support scope is described.</label>
+        <label><input type="checkbox"> Known risks, dependencies, and decision owners are listed.</label>
+        <label><input type="checkbox"> Required output format and review cadence are confirmed.</label>
+      </div>
+    </section>
+
+    <section id="output" class="section-band muted">
+      <div class="section-heading">
+        <p class="eyebrow">Planning Output</p>
+        <h2>SW Planning Output template</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Description</th>
+              <th>Owner</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Project / Platform</td>
+              <td>Project name, platform type, and reuse assumption.</td>
+              <td>HW PM</td>
+              <td>Draft</td>
+            </tr>
+            <tr>
+              <td>SW Scope</td>
+              <td>Deliverables, service needs, tools, image, validation, or automation scope.</td>
+              <td>SW PM</td>
+              <td>Review</td>
+            </tr>
+            <tr>
+              <td>Sample Plan</td>
+              <td>Quantity, configuration, readiness date, and preparation owner.</td>
+              <td>HW PM / SW PM</td>
+              <td>Review</td>
+            </tr>
+            <tr>
+              <td>Lead Time</td>
+              <td>Planning baseline, key milestones, and schedule risks.</td>
+              <td>SW PM</td>
+              <td>Open</td>
+            </tr>
+            <tr>
+              <td>Actions / Risks</td>
+              <td>Open items, owner, due date, and escalation needs.</td>
+              <td>Both</td>
+              <td>Open</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="print-button" type="button" data-print>Print / Save as PDF</button>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Source of truth: 00_PROJECT_CONTEXT.md. Update this site as project decisions become clearer.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
